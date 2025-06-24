@@ -1,7 +1,9 @@
-# Obesity Predictor
+# Obesity Level Predictor (FastAPI + Streamlit)
 
-A machine learning project to predict obesity levels based on lifestyle data. Built with:
+This project uses a trained classification model to predict obesity levels based on lifestyle inputs.
 
-- FastAPI (backend)
-- Streamlit (frontend)
-- Scikit-learn (model)
+## 🚀 How to Run
+
+### 1. Start FastAPI
+```bash
+uvicorn main:app --host 0.0.0.0 --port 8000
