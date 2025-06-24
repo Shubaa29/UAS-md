@@ -46,15 +46,15 @@ if submitted:
         "MTRANS": MTRANS
     }
 
-   try:
+try:
     response = requests.post("https://obesity-api.onrender.com/predict", json=input_data)
     response.raise_for_status()  # Raise error if status_code >= 400
     response_data = response.json()
 
-    if "prediction" in response_data:
+if "prediction" in response_data:
         prediction = response_data["prediction"]
         st.success(f"Predicted Obesity Level: {prediction}")
-    else:
+else:
         st.error("Key 'prediction' not found in API response.")
         st.text(response_data)  # Show full JSON
 
