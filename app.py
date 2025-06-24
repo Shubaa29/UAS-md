@@ -46,7 +46,7 @@ if st.button("Predict"):
     }
 
     # Ganti URL berikut dengan ngrok public URL-mu
-    API_URL = "https://ffc9-34-148-102-68.ngrok-free.app//predict"
+    API_URL = "https://de1d-34-148-102-68.ngrok-free.app/predict"
     try:
         response = requests.post(API_URL, json=input_data)
         result = response.json()
