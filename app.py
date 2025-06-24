@@ -1,16 +1,13 @@
-# app.py - Streamlit Frontend for Obesity Prediction
-
 import streamlit as st
 import requests
 
 st.title("Obesity Prediction App")
-st.write("Masukkan data gaya hidup untuk memprediksi tingkat obesitas.")
 
-# Form input
+# Input Form
 gender = st.selectbox("Gender", ["Male", "Female"])
-age = st.number_input("Age", min_value=1.0, max_value=100.0)
-height = st.number_input("Height (meter)", min_value=1.0, max_value=2.5)
-weight = st.number_input("Weight (kg)", min_value=10.0, max_value=300.0)
+age = st.number_input("Age", 1.0, 100.0)
+height = st.number_input("Height (m)", 1.0, 2.5)
+weight = st.number_input("Weight (kg)", 10.0, 300.0)
 family_history = st.selectbox("Family History of Overweight", ["yes", "no"])
 favc = st.selectbox("High Calorie Food Consumption (FAVC)", ["yes", "no"])
 fcvc = st.slider("Vegetable Consumption Frequency (1-3)", 1.0, 3.0)
@@ -20,11 +17,13 @@ smoke = st.selectbox("Do You Smoke?", ["yes", "no"])
 ch2o = st.slider("Daily Water Intake (1-3)", 1.0, 3.0)
 scc = st.selectbox("Monitor Caloric Intake (SCC)", ["yes", "no"])
 faf = st.slider("Physical Activity Frequency (0-3)", 0.0, 3.0)
-tue = st.slider("Time Using Technology (0-3)", 0.0, 3.0)
-calc = st.selectbox("Alcohol Consumption (CALC)", ["Never", "Sometimes", "Frequently", "Always"])
+tue = st.slider("Technology Usage (0-3)", 0.0, 3.0)
+calc = st.selectbox("Alcohol Consumption", ["Never", "Sometimes", "Frequently", "Always"])
 mtrans = st.selectbox("Transportation Mode", ["Public_Transportation", "Walking", "Bike", "Motorbike", "Automobile"])
 
-# Submit to FastAPI
+# API URL (ganti sesuai URL ngrok kamu)
+API_URL = "https://de1d-34-148-102-68.ngrok-free.app/predict"
+
 if st.button("Predict"):
     input_data = {
         "Gender": gender,
@@ -45,11 +44,17 @@ if st.button("Predict"):
         "MTRANS": mtrans
     }
 
-    # Ganti URL berikut dengan ngrok public URL-mu
-    API_URL = "https://ffc9-34-148-102-68.ngrok-free.app/predict"
     try:
         response = requests.post(API_URL, json=input_data)
-        result = response.json()
-        st.success(f"Tingkat Obesitas: {result['prediction']}")
+        st.write("Status Code:", response.status_code)
+        st.write("Response:", response.text)
+        if response.status_code == 200:
+            result = response.json()
+            if "prediction" in result:
+                st.success(f"Tingkat Obesitas: {result['prediction']}")
+            else:
+                st.error(f"API error: {result.get('error', 'Unknown error')}")
+        else:
+            st.error("Server error: check backend logs.")
     except Exception as e:
-        st.error(f"Error connecting to API: {e}")
+        st.error(f"Gagal koneksi ke API: {e}")
