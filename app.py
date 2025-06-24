@@ -4,6 +4,13 @@ import cloudpickle
 import requests
 import os
 
+# ✅ Tambahkan semua dependensi yang digunakan dalam model
+from sklearn.pipeline import Pipeline
+from sklearn.preprocessing import StandardScaler, OneHotEncoder, LabelEncoder
+from sklearn.compose import ColumnTransformer
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.linear_model import LogisticRegression
+
 st.set_page_config(page_title="Obesity Prediction", layout="centered")
 
 # === Load local model sebagai fallback ===
