@@ -1,9 +1,10 @@
-# main.py - FastAPI Backend for Obesity Prediction (Debugging Enhanced)
+# main.py - FastAPI Backend for Obesity Prediction (Final Revised with Full Debugging)
 
 from fastapi import FastAPI
 from pydantic import BaseModel
 import numpy as np
 import pickle
+import traceback
 
 # Load model, scaler, label encoders, and target encoder
 with open("best_model.pkl", "rb") as f:
@@ -49,7 +50,16 @@ def predict(data: ObesityInput):
             for col in label_encoders:
                 input_data[col] = label_encoders[col].transform([input_data[col]])[0]
         else:
-            print("⚠️ Label encoders not available")
+            # Fallback mapping jika encoder tidak tersedia
+            mapping = {
+                "yes": 1, "no": 0,
+                "Male": 1, "Female": 0,
+                "Always": 3, "Frequently": 2, "Sometimes": 1, "Never": 0,
+                "Public_Transportation": 0, "Walking": 1, "Bike": 2, "Motorbike": 3, "Automobile": 4
+            }
+            for k in input_data:
+                if isinstance(input_data[k], str):
+                    input_data[k] = mapping.get(input_data[k], 0)
 
         # Arrange input in correct order
         ordered = [
@@ -87,5 +97,6 @@ def predict(data: ObesityInput):
         return {"prediction": label}
 
     except Exception as e:
-        print("❌ Error occurred:", str(e))
+        print("❌ Internal Server Error:")
+        traceback.print_exc()
         return {"error": str(e)}
