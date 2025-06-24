@@ -46,14 +46,19 @@ if submitted:
         "MTRANS": MTRANS
     }
 
-    response = requests.post("http://localhost:8000/predict", json=input_data)
+   try:
+    response = requests.post("https://obesity-api.onrender.com/predict", json=input_data)
+    response.raise_for_status()  # Raise error if status_code >= 400
+    response_data = response.json()
 
-    if response.status_code != 200:
-    st.error(f"API Error {response.status_code}: {response.text}")
-else:
-    try:
-        prediction = response.json()["prediction"]
+    if "prediction" in response_data:
+        prediction = response_data["prediction"]
         st.success(f"Predicted Obesity Level: {prediction}")
-    except Exception as e:
-        st.error(f"Gagal memproses response: {e}")
-        st.text(response.text)
+    else:
+        st.error("Key 'prediction' not found in API response.")
+        st.text(response_data)  # Show full JSON
+
+except requests.exceptions.RequestException as e:
+    st.error(f"Request error: {e}")
+except Exception as e:
+    st.error(f"Unexpected error: {e}")
