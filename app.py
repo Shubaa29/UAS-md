@@ -8,11 +8,12 @@ st.set_page_config(page_title="Obesity Prediction", layout="centered")
 
 # === Load local model sebagai fallback ===
 MODEL_PATH = "model.pkl"
-if os.path.exists(MODEL_PATH):
+try:
     with open(MODEL_PATH, 'rb') as f:
         local_model = cloudpickle.load(f)
     model_loaded = True
-else:
+except Exception as e:
+    st.error(f"❌ Gagal load model.pkl: {e}")
     local_model = None
     model_loaded = False
 
