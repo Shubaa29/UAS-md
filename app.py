@@ -46,15 +46,10 @@ if st.button("Predict"):
     }
 
     # Ganti URL berikut dengan ngrok public URL-mu
-    API_URL = "https://de1d-34-148-102-68.ngrok-free.app/predict"
+    API_URL = "https://ffc9-34-148-102-68.ngrok-free.app/predict"
     try:
         response = requests.post(API_URL, json=input_data)
-
-st.write("Status Code:", response.status_code)
-st.write("Response Text:", response.text)
-
-try:
-    result = response.json()
-    st.success(f"Tingkat Obesitas: {result['prediction']}")
-except Exception as e:
-    st.error("Gagal memproses respons dari API.")
+        result = response.json()
+        st.success(f"Tingkat Obesitas: {result['prediction']}")
+    except Exception as e:
+        st.error(f"Error connecting to API: {e}")
