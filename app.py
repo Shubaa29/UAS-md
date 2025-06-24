@@ -1,6 +1,6 @@
 import streamlit as st
 import pandas as pd
-import cloudpickle
+import pickle
 import requests
 import os
 
@@ -17,7 +17,7 @@ st.set_page_config(page_title="Obesity Prediction", layout="centered")
 MODEL_PATH = "model.pkl"
 try:
     with open(MODEL_PATH, 'rb') as f:
-        local_model = cloudpickle.load(f)
+        local_model = pickle.load(f)
     model_loaded = True
 except Exception as e:
     st.error(f"❌ Gagal load model.pkl: {e}")
