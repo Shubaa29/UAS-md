@@ -13,7 +13,7 @@ from sklearn.linear_model import LogisticRegression
 
 st.set_page_config(page_title="Obesity Prediction", layout="centered")
 
-
+# === Load local model sebagai fallback ===
 MODEL_PATH = "model.pkl"
 try:
     with open(MODEL_PATH, 'rb') as f:
