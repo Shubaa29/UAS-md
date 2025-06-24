@@ -5,7 +5,7 @@ st.title("Obesity Prediction App")
 
 # Input Form
 gender = st.selectbox("Gender", ["Male", "Female"])
-age = st.number_input("Age", 1.0, 100.0)
+age = st.number_input("Age", 1, 100.0)
 height = st.number_input("Height (m)", 1.0, 2.5)
 weight = st.number_input("Weight (kg)", 10.0, 300.0)
 family_history = st.selectbox("Family History of Overweight", ["yes", "no"])
