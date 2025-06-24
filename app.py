@@ -31,7 +31,7 @@ def user_input():
         FCVC = st.slider("Vegetable Consumption Frequency", 1.0, 3.0)
         NCP = st.slider("Number of Main Meals", 1.0, 4.0)
         CAEC = st.selectbox("Eating Between Meals", ["no", "Sometimes", "Frequently", "Always"])
-    
+
     with col2:
         SMOKE = st.selectbox("Do you smoke?", ["yes", "no"])
         CH2O = st.slider("Water Intake (L)", 1.0, 3.0)
@@ -72,7 +72,7 @@ if st.button('🔍 Predict'):
 
         if response.status_code == 200:
             result = response.json()
-            st.success(f"🎯 Predicted Obesity Level: {result['prediction']}")
+            st.success(f"🌟 Predicted Obesity Level: {result['prediction']}")
         else:
             raise Exception(f"API Error: {response.text}")
 
@@ -82,7 +82,7 @@ if st.button('🔍 Predict'):
             try:
                 df_input = pd.DataFrame([input_data])
                 pred = local_model.predict(df_input)[0]
-                st.success(f"🎯 Predicted Obesity Level (Local Model): {pred}")
+                st.success(f"🌟 Predicted Obesity Level (Local Model): {pred}")
             except Exception as e:
                 st.error(f"❌ Error saat prediksi dengan model lokal: {e}")
         else:
