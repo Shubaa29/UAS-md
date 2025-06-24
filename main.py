@@ -1,4 +1,4 @@
-# main.py - FastAPI Backend for Obesity Prediction (Final Revised with Full Debugging)
+# main.py - FastAPI Backend for Obesity Prediction (Safe Encoder Version)
 
 from fastapi import FastAPI
 from pydantic import BaseModel
@@ -45,12 +45,15 @@ def predict(data: ObesityInput):
         input_data = data.dict()
         print("📥 Input received:", input_data)
 
-        # Encode categorical features
+        # Safe encoding of categorical features
         if label_encoders:
             for col in label_encoders:
-                input_data[col] = label_encoders[col].transform([input_data[col]])[0]
+                try:
+                    input_data[col] = label_encoders[col].transform([input_data[col]])[0]
+                except ValueError:
+                    print(f"⚠️ Value '{input_data[col]}' not in encoder for '{col}', fallback to 0")
+                    input_data[col] = 0
         else:
-            # Fallback mapping jika encoder tidak tersedia
             mapping = {
                 "yes": 1, "no": 0,
                 "Male": 1, "Female": 0,
@@ -61,7 +64,6 @@ def predict(data: ObesityInput):
                 if isinstance(input_data[k], str):
                     input_data[k] = mapping.get(input_data[k], 0)
 
-        # Arrange input in correct order
         ordered = [
             input_data["Gender"],
             input_data["Age"],
