@@ -27,5 +27,7 @@ class ObesityInput(BaseModel):
 @app.post("/predict")
 def predict(data: ObesityInput):
     df = pd.DataFrame([data.dict()])
+    print(df.head())  
     pred = model.predict(df)[0]
+    print("Prediction:", pred)  
     return {"prediction": pred}
