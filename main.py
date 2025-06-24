@@ -1,14 +1,19 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
-import pandas as pd
-import joblib
+import pickle
 
 app = FastAPI()
-model = joblib.load("model.pkl")
+
+try:
+    with open("model.pkl", "rb") as f:
+        model = pickle.load(f)
+    print("✅ Model loaded.")
+except Exception as e:
+    print("❌ Failed to load model:", e)
 
 class ObesityInput(BaseModel):
     Gender: str
-    Age: float
+    Age: int
     Height: float
     Weight: float
     family_history_with_overweight: str
@@ -26,8 +31,9 @@ class ObesityInput(BaseModel):
 
 @app.post("/predict")
 def predict(data: ObesityInput):
-    df = pd.DataFrame([data.dict()])
-    print(df.head())  
-    pred = model.predict(df)[0]
-    print("Prediction:", pred)  
-    return {"prediction": pred}
+    try:
+        input_data = data.dict()
+        prediction = model.predict([input_data])
+        return {"prediction": prediction[0]}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
