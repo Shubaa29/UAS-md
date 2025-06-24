@@ -46,10 +46,14 @@ if submitted:
         "MTRANS": MTRANS
     }
 
-    response = requests.post("https://obesity-api.onrender.com/predict", json=input_data)
+    response = requests.post("http://localhost:8000/predict", json=input_data)
 
-    if response.status_code == 200:
+    if response.status_code != 200:
+    st.error(f"API Error {response.status_code}: {response.text}")
+else:
+    try:
         prediction = response.json()["prediction"]
         st.success(f"Predicted Obesity Level: {prediction}")
-    else:
-        st.error("Prediction failed.")
+    except Exception as e:
+        st.error(f"Gagal memproses response: {e}")
+        st.text(response.text)
