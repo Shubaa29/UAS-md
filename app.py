@@ -22,7 +22,7 @@ calc = st.selectbox("Alcohol Consumption", ["Never", "Sometimes", "Frequently", 
 mtrans = st.selectbox("Transportation Mode", ["Public_Transportation", "Walking", "Bike", "Motorbike", "Automobile"])
 
 # API URL (ganti sesuai URL ngrok kamu)
-API_URL = "https://850b-34-148-102-68.ngrok-free.app/predict"
+API_URL = "https://34f0-34-61-32-62.ngrok-free.app/predict"
 
 if st.button("Predict"):
     input_data = {
